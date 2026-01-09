@@ -1,7 +1,11 @@
-const router = require('express').Router();
-const controller = require('../controllers/product.controller');
+import { Router } from 'express';
+import * as controller from '../controllers/product.controller.js';
+
+const router = Router();
 
 router.get('/', controller.getAll);
 router.post('/', controller.create);
 
-module.exports = router;
+router.post('/import/sheet', controller.importSheet)
+
+export default router;

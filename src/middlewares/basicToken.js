@@ -1,4 +1,4 @@
-module.exports = function basicToken(req, res, next) {
+export default function basicToken(req, res, next) {
   try {
     const authHeader = req.headers.authorization;
 
@@ -46,4 +46,4 @@ module.exports = function basicToken(req, res, next) {
       message: 'Auth middleware failed'
     });
   }
-};
+}

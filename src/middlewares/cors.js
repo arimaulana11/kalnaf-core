@@ -1,4 +1,4 @@
-module.exports = (req, res, next) => {
+export default (req, res, next) => {
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader(
     'Access-Control-Allow-Methods',
@@ -9,6 +9,7 @@ module.exports = (req, res, next) => {
     'Content-Type, Authorization'
   );
 
+  // Preflight request
   if (req.method === 'OPTIONS') {
     return res.sendStatus(204);
   }

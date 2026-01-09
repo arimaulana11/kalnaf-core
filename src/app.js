@@ -1,40 +1,73 @@
-require('dotenv').config();
-const express = require('express');
+// ==========================
+// ENV & EXPRESS INIT
+// ==========================
+import 'dotenv/config';       // load dotenv paling atas
+
+import express from "express";
+import cookieParser from "cookie-parser";
+
 const app = express();
 
-// ===== Custom Middlewares (No Library) =====
-const cors = require('./middlewares/cors');
-const requestId = require('./middlewares/requestId');
-const logger = require('./middlewares/logger');
-const notFound = require('./middlewares/notFound');
-const errorHandler = require('./middlewares/errorHandler');
-const basicToken = require('./middlewares/basicToken');
-
-
-// ===== Body Parser (Built-in Express) =====
-app.use(express.json({ limit: '5mb' }));
+// ==========================
+// Body Parser
+// ==========================
+app.use(express.json({ limit: "5mb" }));
 app.use(express.urlencoded({ extended: true }));
 
-// ===== Global Middleware =====
+// ==========================
+// Cookie Parser
+// ==========================
+app.use(cookieParser());
+
+// ==========================
+// Custom Middlewares
+// ==========================
+import cors from "./middlewares/cors.js";
+import requestId from "./middlewares/requestId.js";
+import logger from "./middlewares/logger.js";
+import notFound from "./middlewares/notFound.js";
+import errorHandler from "./middlewares/errorHandler.js";
+import basicToken from "./middlewares/basicToken.js";
+
+// ==========================
+// Global middleware
+// ==========================
 app.use(cors);
 app.use(requestId);
 app.use(logger);
 
-// ===== Routes =====
-const productRoutes = require('./routes/product.routes');
+// ==========================
+// Routes
+// ==========================
+import authRoutes from "./routes/auth.routes.js";
+import productRoutes from "./routes/product.routes.js";
+import healthRoutes from "./routes/health.js";
 
-app.use('/health', require('./routes/health'));
-app.use('/api/products', basicToken, productRoutes);
+// Health check
+app.use("/health", healthRoutes);
 
-app.get('/', (req, res) => {
+// AUTH routes (tanpa basicToken)
+app.use("/api/auth", authRoutes);
+
+// PRODUCT routes (pakai basicToken)
+app.use("/api/products", basicToken, productRoutes);
+
+
+// Root endpoint
+app.get("/", (req, res) => {
   res.json({
-    message: 'API LIVE',
-    requestId: req.requestId
+    message: "API LIVE",
+    requestId: req.requestId || null,
   });
 });
 
-// ===== Error Handling =====
+// ==========================
+// Error Handling
+// ==========================
 app.use(notFound);
 app.use(errorHandler);
 
-module.exports = app;
+// ==========================
+// EXPORT APP (ES Module)
+// ==========================
+export default app;

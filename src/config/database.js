@@ -1,4 +1,6 @@
-const { Pool } = require('pg');
+// src/config/database.js
+import pkg from 'pg';
+const { Pool } = pkg;
 
 let pool;
 
@@ -18,8 +20,8 @@ if (!pool) {
     max: 1,                 // jangan lebih dari 1
     idleTimeoutMillis: 1000,
     connectionTimeoutMillis: 3000,
-    keepAlive: false
+    keepAlive: false,
   });
 }
 
-module.exports = pool;
+export default pool;

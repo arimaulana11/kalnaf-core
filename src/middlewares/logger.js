@@ -1,4 +1,4 @@
-module.exports = (req, res, next) => {
+export default (req, res, next) => {
   const start = Date.now();
 
   res.on('finish', () => {
@@ -9,7 +9,7 @@ module.exports = (req, res, next) => {
       req.originalUrl,
       res.statusCode,
       `${duration}ms`,
-      `rid=${req.requestId}`
+      `rid=${req.requestId || null}`
     );
   });
 

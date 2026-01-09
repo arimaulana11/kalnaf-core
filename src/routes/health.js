@@ -1,6 +1,7 @@
-const express = require('express');
-const router = express.Router();
-const pool = require('../config/database');
+import { Router } from 'express';
+import pool from '../config/database.js';
+
+const router = Router();
 
 router.get('/db', async (req, res) => {
   try {
@@ -10,9 +11,9 @@ router.get('/db', async (req, res) => {
     console.error(err);
     res.status(500).json({
       status: 'error',
-      message: err.message
+      message: err.message,
     });
   }
 });
 
-module.exports = router;
+export default router;
